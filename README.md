@@ -14,13 +14,13 @@ Deforum-XYZ-Plot is a utility that enables Stable Diffusion animation creators t
 ## Live Application on Gihhub
 
 ### **Basic Version**
-[Deforum-XYZ-Plot Basic](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum-xyz-range.html)
+[Deforum-XYZ-Plot Basic](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum-xyz-simple.html)
 - Simpler interface
 - Parameter X/Y/Z plotting only
 - No prompt management
 
 ### **Full-Featured Version**
-[Deforum-XYZ-Plot Advanced](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum-xyz-batch%20generator-global-animation.html)
+[Deforum-XYZ-Plot Advanced](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum-xyz-advanced.html)
 - Complete interface
 - Global positive prompts support
 - Keyframe animation prompts
