@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deforum X/Y Plot Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #1e1e1e;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background-color: #333;
+            color: #e0e0e0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #valueFields, #results {
+            margin-top: 20px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .input-group button {
+            background-color: #f44336;
+        }
+        .input-group button:hover {
+            background-color: #d32f2f;
+        }
+        .examples {
+            background-color: #2a2a2a;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .examples h4 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .examples pre {
+            margin: 5px 0;
+            color: #e0e0e0;
+        }
+        #fileList div {
+            background-color: #2a2a2a;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        #fileList button {
+            background-color: #2196F3;
+            margin-top: 5px;
+        }
+        #fileList button:hover {
+            background-color: #0b7dda;
+        }
+        #downloadBtn {
+            background-color: #ff9800;
+            margin-bottom: 15px;
+        }
+        #downloadBtn:hover {
+            background-color: #e68a00;
+        }
+    </style>
+</head>
+<body>
+    <h1>Deforum X/Y Plot Generator</h1>
+    
+    <div class="section">
+        <h2>Step 1: Upload Base Settings</h2>
+        <div class="form-group">
+            <label for="settingsFile">Upload Deforum Settings File</label>
+            <input type="file" id="settingsFile" accept=".txt,.json">
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Step 2: Select Parameters</h2>
+        <div class="form-group">
+            <label for="xParam">X-Axis Parameter</label>
+            <select id="xParam">
+                <option value="">Select Parameter</option>
+                <!-- Will be populated dynamically -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="yParam">Y-Axis Parameter</label>
+            <select id="yParam">
+                <option value="">Select Parameter</option>
+                <!-- Will be populated dynamically -->
+            </select>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Step 3: Define Values</h2>
+        
+        <div class="examples">
+            <h4>Supported Value Formats</h4>
+            <p>Enter individual values or use these range formats:</p>
+            <pre>• Simple ranges: "1-5" = 1, 2, 3, 4, 5</pre>
+            <pre>• Ranges with increment: "1-5 (+2)" = 1, 3, 5</pre>
+            <pre>• Ranges with increment: "10-5 (-3)" = 10, 7</pre>
+            <pre>• Ranges with increment: "1-3 (+0.5)" = 1, 1.5, 2, 2.5, 3</pre>
+            <pre>• Ranges with count: "1-10 [5]" = 1, 3, 5, 7, 10</pre>
+            <pre>• Ranges with count: "0.0-1.0 [6]" = 0.0, 0.2, 0.4, 0.6, 0.8, 1.0</pre>
+        </div>
+        
+        <div id="xValues">
+            <h3>X-Axis Values</h3>
+            <div id="xValueFields">
+                <div class="input-group">
+                    <input type="text" placeholder="Value or Range" class="x-value">
+                    <button type="button" onclick="removeValue(this)">Remove</button>
+                </div>
+            </div>
+            <button type="button" onclick="addXValue()">Add X Value</button>
+        </div>
+        
+        <div id="yValues">
+            <h3>Y-Axis Values</h3>
+            <div id="yValueFields">
+                <div class="input-group">
+                    <input type="text" placeholder="Value or Range" class="y-value">
+                    <button type="button" onclick="removeValue(this)">Remove</button>
+                </div>
+            </div>
+            <button type="button" onclick="addYValue()">Add Y Value</button>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Step 4: Generate Settings</h2>
+        <button type="button" id="generateBtn" onclick="generateSettings()">Generate X/Y Plot Settings</button>
+        
+        <div id="results" style="display: none;">
+            <h3>Generated Settings Files</h3>
+            <p><span id="fileCount">0</span> files generated</p>
+            <button type="button" id="downloadBtn" onclick="downloadAllSettings()">Download All Settings</button>
+            <div id="fileList"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script>
+        let baseSettings = null;
+        let parameterList = [];
+        let generatedSettings = [];
+
+        // When a settings file is uploaded
+        document.getElementById('settingsFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    baseSettings = JSON.parse(e.target.result);
+                    populateParameterDropdowns();
+                } catch (error) {
+                    alert('Error parsing settings file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Populate parameter dropdowns based on the loaded settings
+        function populateParameterDropdowns() {
+            if (!baseSettings) return;
+            
+            // Get all parameter names from the settings
+            parameterList = getParameterList(baseSettings);
+            
+            // Populate dropdowns
+            const xDropdown = document.getElementById('xParam');
+            const yDropdown = document.getElementById('yParam');
+            
+            // Clear existing options
+            xDropdown.innerHTML = '<option value="">Select Parameter</option>';
+            yDropdown.innerHTML = '<option value="">Select Parameter</option>';
+            
+            // Add options for each parameter
+            parameterList.forEach(param => {
+                xDropdown.innerHTML += `<option value="${param}">${param}</option>`;
+                yDropdown.innerHTML += `<option value="${param}">${param}</option>`;
+            });
+        }
+
+        // Extract a flat list of parameters from the settings object
+        function getParameterList(settings, prefix = '') {
+            let params = [];
+            
+            for (const [key, value] of Object.entries(settings)) {
+                const paramName = prefix ? `${prefix}.${key}` : key;
+                
+                // Skip some complex or irrelevant fields
+                if (key === 'prompts' || typeof value === 'function') {
+                    continue;
+                }
+                
+                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                    // Recursively get nested parameters
+                    params = params.concat(getParameterList(value, paramName));
+                } else {
+                    params.push(paramName);
+                }
+            }
+            
+            return params;
+        }
+
+        // Add a new X value input field
+        function addXValue() {
+            const container = document.getElementById('xValueFields');
+            const div = document.createElement('div');
+            div.className = 'input-group';
+            div.innerHTML = `
+                <input type="text" placeholder="Value or Range" class="x-value">
+                <button type="button" onclick="removeValue(this)">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+
+        // Add a new Y value input field
+        function addYValue() {
+            const container = document.getElementById('yValueFields');
+            const div = document.createElement('div');
+            div.className = 'input-group';
+            div.innerHTML = `
+                <input type="text" placeholder="Value or Range" class="y-value">
+                <button type="button" onclick="removeValue(this)">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+
+        // Remove a value input field
+        function removeValue(button) {
+            button.parentElement.remove();
+        }
+
+        // Parse a range string and return an array of values
+        function parseRange(rangeStr) {
+            rangeStr = rangeStr.trim();
+            
+            // Check if it's a simple value (not a range)
+            if (!rangeStr.includes('-')) {
+                return [parseParameterValue(rangeStr)];
+            }
+            
+            // Simple range: "1-5"
+            const simpleRangeMatch = rangeStr.match(/^(\-?\d*\.?\d+)-(\-?\d*\.?\d+)$/);
+            if (simpleRangeMatch) {
+                const start = parseFloat(simpleRangeMatch[1]);
+                const end = parseFloat(simpleRangeMatch[2]);
+                const isInteger = !rangeStr.includes('.');
+                const result = [];
+                
+                if (isInteger) {
+                    // Integer range
+                    const step = start <= end ? 1 : -1;
+                    for (let i = start; (step > 0) ? i <= end : i >= end; i += step) {
+                        result.push(i);
+                    }
+                } else {
+                    // Float range with default 0.1 step
+                    const step = start <= end ? 0.1 : -0.1;
+                    // Round to 1 decimal place to prevent floating point errors
+                    for (let i = start; (step > 0) ? i <= end + 0.0001 : i >= end - 0.0001; i += step) {
+                        result.push(parseFloat(i.toFixed(1)));
+                    }
+                }
+                
+                return result;
+            }
+            
+            // Range with increment: "1-5 (+2)" or "10-5 (-3)" or "1-3 (+0.5)"
+            const incrementRangeMatch = rangeStr.match(/^(\-?\d*\.?\d+)-(\-?\d*\.?\d+)\s*\(\s*(\+|\-)(\d*\.?\d+)\s*\)$/);
+            if (incrementRangeMatch) {
+                const start = parseFloat(incrementRangeMatch[1]);
+                const end = parseFloat(incrementRangeMatch[2]);
+                const sign = incrementRangeMatch[3] === '+' ? 1 : -1;
+                const increment = parseFloat(incrementRangeMatch[4]) * sign;
+                const result = [start];
+                
+                let current = start;
+                while ((increment > 0 && current + increment <= end) || 
+                       (increment < 0 && current + increment >= end)) {
+                    current += increment;
+                    result.push(parseFloat(current.toFixed(10))); // Using toFixed to avoid floating point errors
+                }
+                
+                return result;
+            }
+            
+            // Range with count: "1-10 [5]" or "0.0-1.0 [6]"
+            const countRangeMatch = rangeStr.match(/^(\-?\d*\.?\d+)-(\-?\d*\.?\d+)\s*\[\s*(\d+)\s*\]$/);
+            if (countRangeMatch) {
+                const start = parseFloat(countRangeMatch[1]);
+                const end = parseFloat(countRangeMatch[2]);
+                const count = parseInt(countRangeMatch[3]);
+                
+                if (count < 2) return [start];
+                
+                const result = [];
+                const step = (end - start) / (count - 1);
+                
+                for (let i = 0; i < count; i++) {
+                    const value = start + i * step;
+                    result.push(parseFloat(value.toFixed(10))); // Using toFixed to avoid floating point errors
+                }
+                
+                return result;
+            }
+            
+            // If not recognized as a range, treat as a single value
+            return [parseParameterValue(rangeStr)];
+        }
+
+        // Parse a parameter value considering its type
+        function parseParameterValue(value) {
+            // Try to parse as number
+            if (!isNaN(value)) {
+                return Number(value);
+            }
+            
+            // Check for boolean
+            if (value.toLowerCase() === 'true') return true;
+            if (value.toLowerCase() === 'false') return false;
+            
+            // Default to string
+            return value;
+        }
+
+        // Generate settings files for all X/Y combinations
+        function generateSettings() {
+            if (!baseSettings) {
+                alert('Please upload a settings file first');
+                return;
+            }
+            
+            const xParam = document.getElementById('xParam').value;
+            const yParam = document.getElementById('yParam').value;
+            
+            if (!xParam || !yParam) {
+                alert('Please select both X and Y parameters');
+                return;
+            }
+            
+            // Get all X values including ranges
+            let xValues = [];
+            document.querySelectorAll('.x-value').forEach(input => {
+                if (input.value.trim()) {
+                    xValues = xValues.concat(parseRange(input.value));
+                }
+            });
+            
+            // Get all Y values including ranges
+            let yValues = [];
+            document.querySelectorAll('.y-value').forEach(input => {
+                if (input.value.trim()) {
+                    yValues = yValues.concat(parseRange(input.value));
+                }
+            });
+            
+            if (xValues.length === 0 || yValues.length === 0) {
+                alert('Please add at least one value for both X and Y parameters');
+                return;
+            }
+            
+            // Generate settings for all combinations
+            generatedSettings = [];
+            
+            for (const yValue of yValues) {
+                for (const xValue of xValues) {
+                    // Create a deep copy of the base settings
+                    const settings = JSON.parse(JSON.stringify(baseSettings));
+                    
+                    // Update the parameters
+                    setNestedProperty(settings, xParam, xValue);
+                    setNestedProperty(settings, yParam, yValue);
+                    
+                    // Update batch name
+                    settings.batch_name = `${settings.batch_name}_${xParam.split('.').pop()}-${xValue}_${yParam.split('.').pop()}-${yValue}`;
+                    
+                    // Add to generated settings
+                    generatedSettings.push({
+                        x: xValue,
+                        y: yValue,
+                        fileName: `${xParam.replace(/\./g, '_')}_${xValue}_${yParam.replace(/\./g, '_')}_${yValue}.txt`,
+                        settings: settings
+                    });
+                }
+            }
+            
+            // Show results
+            displayResults();
+        }
+
+        // Set a nested property in an object
+        function setNestedProperty(obj, path, value) {
+            const parts = path.split('.');
+            let current = obj;
+            
+            for (let i = 0; i < parts.length - 1; i++) {
+                const part = parts[i];
+                if (!current[part]) {
+                    current[part] = {};
+                }
+                current = current[part];
+            }
+            
+            current[parts[parts.length - 1]] = value;
+        }
+
+        // Display the generated settings files
+        function displayResults() {
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('fileCount').textContent = generatedSettings.length;
+            
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            
+            generatedSettings.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <p>${index + 1}. ${item.fileName}</p>
+                    <p>X: ${item.x}, Y: ${item.y}</p>
+                    <button onclick="downloadSingleSetting(${index})">Download</button>
+                `;
+                fileList.appendChild(div);
+            });
+        }
+
+        // Download a single settings file
+        function downloadSingleSetting(index) {
+            const item = generatedSettings[index];
+            const blob = new Blob([JSON.stringify(item.settings, null, 4)], { type: 'application/json' });
+            saveAs(blob, item.fileName);
+        }
+
+        // Download all settings files as a ZIP archive
+        function downloadAllSettings() {
+            const zip = new JSZip();
+            
+            generatedSettings.forEach(item => {
+                zip.file(item.fileName, JSON.stringify(item.settings, null, 4));
+            });
+            
+            zip.generateAsync({ type: 'blob' }).then(function(content) {
+                saveAs(content, 'deforum_xy_plot_settings.zip');
+            });
+        }
+    </script>
+</body>
+</html>
