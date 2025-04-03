@@ -634,32 +634,31 @@
         }
 
         // Update parameter info based on selection
-        function updateParamInfo(axis) {
-            const param = document.getElementById(`${axis}Param`).value;
-            const infoDiv = document.getElementById(`${axis}ParamInfo`);
-            
-            if (!param || !baseSettings) {
-                infoDiv.innerHTML = '';
-                return;
-            }
-            
-            const value = getNestedProperty(baseSettings, param);
-            const type = getParameterType(value);
-            parameterTypes[param] = type;
-            
-            // Create info text
-            let infoText = `<strong>Type:</strong> ${type}`;
-            
-            if (value !== undefined) {
-                infoText += `, <strong>Current value:</strong> ${JSON.stringify(value)}`;
-            }
-            
-            infoDiv.innerHTML = infoText;
-            
-            // Update input fields based on type
-            updateValueFields(axis, type);
-        }
-        
+function updateParamInfo(axis) {
+    const param = document.getElementById(`${axis}Param`).value;
+    const infoDiv = document.getElementById(`${axis}ParamInfo`);
+    
+    if (!param || !baseSettings) {
+        infoDiv.innerHTML = '';
+        return;
+    }
+    
+    const value = getNestedProperty(baseSettings, param);
+    const type = getParameterType(value);
+    parameterTypes[param] = type;
+    
+    // Create info text
+    let infoText = `<strong>Type:</strong> ${type}`;
+    
+    if (value !== undefined) {
+        infoText += `, <strong>Current value:</strong> ${JSON.stringify(value)}`;
+    }
+    
+    infoDiv.innerHTML = infoText;
+    
+    // Always use text input
+    addTypedValueField(axis, 'text');
+}
         // Update value input fields based on parameter type
         function updateValueFields(axis, type) {
             const container = document.getElementById(`${axis}ValueFields`);
@@ -670,31 +669,18 @@
         }
         
         // Add a typed value input field
-        function addTypedValueField(axis, type) {
-            const container = document.getElementById(`${axis}ValueFields`);
-            const div = document.createElement('div');
-            div.className = 'input-group';
-            
-            let inputHtml = '';
-            
-            switch (type) {
-                case 'number':
-                    inputHtml = `<input type="number" step="any" placeholder="Value or Range" class="${axis}-value">`;
-                    break;
-                case 'boolean':
-                    inputHtml = `
-                        <div class="bool-input">
-                            <input type="checkbox" class="${axis}-value" id="${axis}-value-${container.children.length}">
-                            <label for="${axis}-value-${container.children.length}">True</label>
-                        </div>
-                    `;
-                    break;
-                case 'schedule':
-                    inputHtml = `<input type="text" placeholder="Schedule value (e.g., 0:(1.0))" class="${axis}-value">`;
-                    break;
-                default:
-                    inputHtml = `<input type="text" placeholder="Value or Range" class="${axis}-value">`;
-            }
+function addTypedValueField(axis, type) {
+    const container = document.getElementById(`${axis}ValueFields`);
+    const div = document.createElement('div');
+    div.className = 'input-group';
+    
+    div.innerHTML = `
+        <input type="text" placeholder="Value or Range (e.g., 1-5, 1-5 (+2), 0.0-1.0 [6])" class="${axis}-value">
+        <button type="button" onclick="removeValue(this)">Remove</button>
+    `;
+    
+    container.appendChild(div);
+}
             
             div.innerHTML = `
                 ${inputHtml}
