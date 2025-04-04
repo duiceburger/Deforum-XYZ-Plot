@@ -22,7 +22,7 @@ https://github.com/user-attachments/assets/1a46209c-7a08-4ed1-99e7-40b5dbbf03ee
 - No prompt management
 
 ### **Full-Featured Version**
-[Deforum-XYZ-Plot Advanced](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum-xyz-advanced.html)
+[Deforum-XYZ-Plot Advanced](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum-xyz-advanced-V2NameFix.html)
 - Complete interface
 - Global positive prompts support
 - Keyframe animation prompts
