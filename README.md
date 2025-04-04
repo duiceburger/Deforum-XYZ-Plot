@@ -74,6 +74,14 @@ Click "Generate Plot Settings" to create all parameter combinations. You can the
 - Download individual settings files
 - If using Z-axis, download specific Z-groups
 
+
+### Step 6: Run in Deofrum
+
+Run all your [Deforum](https://github.com/deforum-art/deforum-stable-diffusion) settings files using Batch Mode!
+- Endable Batchmode in Deforum
+- drag and drop outputs to Batch Mode
+- Render!
+- 
 ## Example Use Cases
 
 - Test different strength values with different CFG scales
