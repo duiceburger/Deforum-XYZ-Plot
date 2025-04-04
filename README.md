@@ -2,8 +2,6 @@
 
 A browser-based tool for generating batches of Deforum settings files with parametric variations for animation experiments.
 
-https://github.com/user-attachments/assets/1a46209c-7a08-4ed1-99e7-40b5dbbf03ee
-
 ## Overview
 
 Deforum-XYZ-Plot is a utility that enables Stable Diffusion animation creators to easily experiment with different parameter combinations in Deforum. Instead of manually creating dozens of settings files, this tool allows you to:
@@ -12,6 +10,8 @@ Deforum-XYZ-Plot is a utility that enables Stable Diffusion animation creators t
 2. Automatically generate all parameter combinations
 3. Download the resulting settings files individually or as a batch
 4. Maintain proper prompt handling including global positive prompts and keyframed animation prompts
+
+https://github.com/user-attachments/assets/1a46209c-7a08-4ed1-99e7-40b5dbbf03ee
 
 ## Live Application on Gihhub
 
