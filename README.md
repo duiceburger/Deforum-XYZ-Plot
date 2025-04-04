@@ -81,7 +81,7 @@ Run all your [Deforum](https://github.com/deforum-art/deforum-stable-diffusion) 
 - Endable Batchmode in Deforum
 - drag and drop outputs to Batch Mode
 - Render!
-- 
+
 ## Example Use Cases
 
 - Test different strength values with different CFG scales
