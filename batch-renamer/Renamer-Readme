@@ -1,0 +1,132 @@
+# Deforum Video Renamer
+
+A simple utility to automatically rename Deforum video outputs to match their descriptive folder names, making batch experiments easier to organize and identify.
+
+## Problem Solved
+
+Deforum (Automatic1111 WebUI) generates videos with timestamp-only names like `20250610233833.mp4`, even when placed in descriptive folders like `20250610233650_Batch Name_seed_iter_1024x1024_strength-0.4_cfg-7`. This makes it difficult to identify which video corresponds to which parameter settings.
+
+## Solution
+
+This script automatically renames video files to match their parent folder names, giving you descriptive video names that include all your parameter information.
+
+### Before:
+```
+📁 20250610233650_New_Circle_Best_Settings_666_iter_1024x1024_strength-0.4_cfg-7/
+   📹 20250610233833.mp4
+```
+
+### After:
+```
+📁 20250610233650_New_Circle_Best_Settings_666_iter_1024x1024_strength-0.4_cfg-7/
+   📹 20250610233650_New_Circle_Best_Settings_666_iter_1024x1024_strength-0.4_cfg-7.mp4
+```
+
+## Features
+
+- ✅ **Safe dry-run mode** - Preview changes before applying
+- ✅ **Flexible timestamp detection** - Works with timestamps anywhere in folder names
+- ✅ **Batch processing** - Handles multiple folders at once
+- ✅ **Error handling** - Won't overwrite existing files
+- ✅ **Cross-platform** - Works on Windows, macOS, and Linux
+- ✅ **Multiple interfaces** - Python script, Batch file, or PowerShell
+
+## Quick Start
+
+### Option 1: Simple Batch File (Windows - Recommended)
+
+1. Download both files:
+   - `deforum_video_renamer.py`
+   - `rename_deforum_videos.bat`
+
+2. Place both files in your Deforum output directory
+
+3. Double-click `rename_deforum_videos.bat`
+
+4. Review the dry-run results and confirm to proceed
+
+### Option 2: Python Script (All Platforms)
+
+```bash
+# Preview what would be renamed
+python deforum_video_renamer.py --dry-run
+
+# Rename videos in current directory
+python deforum_video_renamer.py
+
+# Rename videos in specific directory
+python deforum_video_renamer.py "path/to/deforum/outputs"
+``
+
+
+## Requirements
+
+- **Python 3.6+** (for Python script)
+- **Windows** (for .bat file)
+
+
+No additional Python packages required - uses only built-in modules.
+
+## How It Works
+
+1. **Scans** for subfolders containing 14-digit timestamps (Deforum batch folders)
+2. **Identifies** timestamp-only video files (e.g., `20250610233833.mp4`)
+3. **Renames** videos to match their parent folder names
+4. **Preserves** original folder structure and other files
+
+## Supported Folder Patterns
+
+The script works with any Deforum batch naming pattern that includes a timestamp:
+
+- `20250610233650_My_Settings_666_1024x1024`
+- `Circle_20250610233650_Best_Settings_iter`
+- `666_1024x1024_STR-0.4_20250610233650`
+- `{seed}_{w}x{h}_-_{strength}_+_{timestring}`
+
+## Safety Features
+
+- **Dry-run by default** - Always shows what would change first
+- **Conflict detection** - Won't overwrite existing files
+- **Backup-friendly** - Original timestamps preserved in new names
+- **Selective processing** - Only renames timestamp-pattern videos
+
+## Example Output
+
+```
+Checking folder: 20250610233650_New_Circle_Best_Settings_666_iter_1024x1024_strength-0.4_cfg-7
+  Folder timestamp: 20250610233650
+  📹 Would rename: '20250610233833.mp4' → '20250610233650_New_Circle_Best_Settings_666_iter_1024x1024_strength-0.4_cfg-7.mp4'
+     Video timestamp: 20250610233833, Folder timestamp: 20250610233650
+
+COMPLETED: 36 videos renamed
+```
+
+## Common Use Cases
+
+- **XY/XYZ Plot experiments** - Easily identify parameter combinations
+- **Batch testing** - Organize multiple runs with different settings
+- **Archive management** - Self-documenting video names
+- **Sharing results** - Descriptive names for collaboration
+
+## Troubleshooting
+
+**Q: Script shows "No video files found"**  
+A: Ensure you're running in a directory that contains Deforum output folders with .mp4 files
+
+**Q: "Python not found" error**  
+A: Install Python from [python.org](https://python.org) and ensure "Add to PATH" is checked
+
+**Q: PowerShell execution policy error**  
+A: Run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+## Contributing
+
+Issues and pull requests welcome! This tool was created to solve a specific workflow problem - if you have similar needs or improvements, please share.
+
+## License
+
+MIT License - feel free to use, modify, and distribute.
+
+---
+
+**Note**: Always run with `--dry-run` first to preview changes. This tool modifies file names, so testing on a backup is recommended for important data.
