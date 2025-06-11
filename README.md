@@ -80,6 +80,23 @@ Run all your [Deforum](https://github.com/deforum-art/deforum-stable-diffusion) 
 - Find the optimal combination of motion parameters
 - Experiment with different sampler+steps combinations
 
+## Fixing File output
+# Deforum Video Renamer
+
+A simple utility to automatically rename Deforum video outputs to match their descriptive folder names, making batch experiments easier to organize and identify.
+
+ Simple Batch File (Windows - Recommended)
+
+1. Download both files:  https://github.com/duiceburger/Deforum-XYZ-Plot/tree/9c270cb2e6e23691d611738fd96a420ade89b068/batch-renamer
+   - `deforum_video_renamer.py`
+   - `rename_deforum_videos.bat`
+
+2. Place both files in your Deforum output directory
+
+3. Double-click `rename_deforum_videos.bat`
+
+4. Review the dry-run results and confirm to proceed
+
 ## Technical Details
 
 This tool runs entirely in your browser - no data is sent to any server. Your settings and prompts remain private and secure.
