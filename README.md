@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/1a46209c-7a08-4ed1-99e7-40b5dbbf03ee
 ## Live Application on Gihhub
 
 ### **Basic Fixed Version Name and Output**
-[Deforum Batch Renamer V2](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum_xyz_enhanced-batchname.html)
+[Deforum XYZ PLOT V2](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum_xyz_enhanced-batchname.html)
 - Simpler interface
 - Parameter X/Y/Z plotting only
 - fixed 0: X issue
@@ -33,7 +33,7 @@ https://github.com/user-attachments/assets/1a46209c-7a08-4ed1-99e7-40b5dbbf03ee
 ### Step 1: Upload Deforum Settings
 
 Start by uploading an existing Deforum settings file (TXT format). This will serve as the base for all the variations.
-[Deforum Batch Renamer V2](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum_xyz_enhanced-batchname.html)
+[Deforum XYZ PLOT V2](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum_xyz_enhanced-batchname.html)
 
 ### Step 2: Configure Prompts
 
