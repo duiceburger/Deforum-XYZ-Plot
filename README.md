@@ -15,6 +15,9 @@ https://github.com/user-attachments/assets/1a46209c-7a08-4ed1-99e7-40b5dbbf03ee
 
 ## Live Application on Gihhub
 
+[Bach Name Fix](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum_xyz_enhanced-batchname.html)
+
+
 ### **Fixed Version**
 [Deforum-XYZ-Plot Fixed](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum_xyz_fixed.html)
 - Simpler interface
