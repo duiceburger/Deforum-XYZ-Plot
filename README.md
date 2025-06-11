@@ -16,35 +16,24 @@ https://github.com/user-attachments/assets/1a46209c-7a08-4ed1-99e7-40b5dbbf03ee
 ## Live Application on Gihhub
 
 ### **Basic Fixed Version Name and Output**
-[Basic Version Fixed](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum_xyz_enhanced-batchname.html)
+[Deforum Batch Renamer V2](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum_xyz_enhanced-batchname.html)
 - Simpler interface
 - Parameter X/Y/Z plotting only
 - fixed 0: X issue
-
-
-
-### **Full-Featured Version** (not working well)
-[Deforum-XYZ-Plot Advanced](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum-xyz-advanced-V2NameFix.html)
-- Complete interface
-- Global positive prompts support
-- Keyframe animation prompts
-- Parameter X/Y/Z plotting
-- Enhanced settings management
 
 ## Features
 
 - **Parameter Selection**: Choose any parameters from Deforum settings to vary
 - **Flexible Value Ranges**: Define values as exact numbers, ranges, or incremental sequences
-- **Global Positive Prompts**: Set common positive prompts that apply to all frames
-- **Keyframed Animation Prompts**: Maintain frame-specific prompts for animation
 - **Batch Download**: Get all generated settings as a ZIP file organized by parameter values
-- **3D Parameter Space**: Optionally add a Z-axis parameter for complete experimentation
+- **optional 3rd value**: Optionally add a Z-axis parameter for massive batches
 
 ## How to Use
 
 ### Step 1: Upload Deforum Settings
 
 Start by uploading an existing Deforum settings file (TXT format). This will serve as the base for all the variations.
+[Deforum Batch Renamer V2](https://duiceburger.github.io/Deforum-XYZ-Plot/deforum_xyz_enhanced-batchname.html)
 
 ### Step 2: Configure Prompts
 
